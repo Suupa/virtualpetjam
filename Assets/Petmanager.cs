@@ -15,17 +15,20 @@ public class Petmanager : MonoBehaviour
     public GameObject mainMenuPanel;
     public GameObject foodMenuPanel;
     public GameObject statMenuPanel;
+    public GameObject musicMenuPanel;
 
     public AudioClip confirmSFX;
     public AudioClip denySFX;
     public AudioClip goodJobSFX;
 
-    AudioSource audio;
+    public AudioClip[] songs;
+
+    public AudioSource audio;
+    public AudioSource audioBGM;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         hunger = 80;
-        audio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -55,14 +58,23 @@ public class Petmanager : MonoBehaviour
         audio.Play();
     }
 
+    public void PlaySong(int value)
+    {
+        audioBGM.clip = songs[value];
+        audioBGM.Play();
+        SetPanel(0);
+    }
+
     public void SetPanel(int menuindex)
     {
         mainMenuPanel.SetActive(false);
         foodMenuPanel.SetActive(false);
         statMenuPanel.SetActive(false);
+        musicMenuPanel.SetActive(false);
         if (menuindex == -1)
         {
             mainMenuPanel.SetActive(true);
+            audio.Stop();
             audio.clip = denySFX;
             audio.Play();
 
@@ -81,6 +93,12 @@ public class Petmanager : MonoBehaviour
         else if (menuindex == 2)
         {
             statMenuPanel.SetActive(true);
+            audio.clip = confirmSFX;
+            audio.Play();
+        }
+        else if (menuindex == 3)
+        {
+            musicMenuPanel.SetActive(true);
             audio.clip = confirmSFX;
             audio.Play();
         }
